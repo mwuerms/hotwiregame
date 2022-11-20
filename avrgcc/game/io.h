@@ -9,10 +9,8 @@
 #define _IO_H_
 /* - includes --------------------------------------------------------------- */
 
-// PWM, F_CPU out, PORTB
-#define PIN_CLKO (0) // D8, F_CPU/1 output
-#define PIN_OC1A (1) // D9, variable pwm signal, (on/off)
-#define PIN_OC1B (2) // D10, variable pwm signal, (on/off)
+// AUDIO, PORTB
+#define PIN_AUDIO_PWM (1) // D9, variable pwm signal, audio tones
 
 // ISP PORTB: 3, 4, 5
 
@@ -33,10 +31,8 @@
 #define PIN_TXD (1)
 
 // Buttons PORTD
-#define PIN_BUTTON_ON_OFF (2) // D2, INT0, PCINT18,  on/off button
-#define PIN_BUTTON_WHEEL (3)  // D3, INT1, PCINT19,  button of rotary encoder
-
-// fixed PWM, PORTD
-#define PIN_OC0A (6) // D6, fixed 1 MHz 50% pwm signal, also (on/off)
+#define PIN_HOT_WIRE (2) // D2, INT0, PCINT18,  when the hot wire makes contact
+#define PIN_FINISH_POINT (3)  // D3, INT1, PCINT19,  contact of finishing line
+#define PIN_START_POINT (4)  // D4, PCINT20, contact of start potision
 
 #endif /* _IO_H_ */

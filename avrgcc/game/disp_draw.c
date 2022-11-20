@@ -11,7 +11,8 @@
 #include "version.h"
 #include "wdt.h"
 #include <stdint.h>
-#include "buttons.h"
+#include "gpio.h"
+#include "game.h"
 
 void disp_draw_init(void)
 {
@@ -362,8 +363,9 @@ static void sweep_mode_duty_status_to_line(char *start_str, char *stop_str)
   line[20] = '%';
 }
 
-void disp_draw_pwm_setup(pwm_settings_t *ps)
+void disp_draw_game_state(game_states_t st)
 {
+#if 0
   // preparation convert numbers into strings
   lcd_clear_buffer();
   convert_freq_to_str(freq_str, ps->freq);
@@ -451,4 +453,5 @@ void disp_draw_pwm_setup(pwm_settings_t *ps)
   default:;
   }
   lcd_display();
+  #endif
 }

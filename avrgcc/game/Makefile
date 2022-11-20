@@ -40,7 +40,7 @@
 #----------------------------------------------------------------------------
 
 # Target file name (without extension).
-TARGET = pwmgen
+TARGET = hwgame
 
 # MCU name
 MCU = atmega328p # arduino nano atmega328p
@@ -85,7 +85,7 @@ FORMAT = ihex
 OBJDIR = obj
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = main.c mcusleep.c wdt.c pwm.c buttons.c disp.c disp_draw.c lcd.c font.c i2c.c
+SRC = main.c mcusleep.c wdt.c audio.c gpio.c game.c disp_draw.c lcd.c font.c i2c.c
 
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC =

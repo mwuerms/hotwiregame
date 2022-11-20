@@ -14,9 +14,9 @@
 
 #include "project.h"
 #include "mcusleep.h"
-#include "pwm.h"
-#include "buttons.h"
-#include "disp.h"
+#include "audio.h"
+#include "gpio.h"
+#include "game.h"
 #include "wdt.h"
 
 /* - defines ---------------------------------------------------------------- */
@@ -32,29 +32,21 @@ volatile uint8_t global_button_events;
 int main(void)
 {
     uint8_t local_events = 0;
-    uint8_t local_display_events = 0;
-    uint8_t local_button_events = 0;
     // init
     sleep_mode_init();
     use_sleep_mode(ACTIVE);
 
-    buttons_init();
-    disp_init();
-    disp_show_info();
+    gpio_init();
+    game_init();
+    audio_init();
 
-    pwm_init();
     sei();
 
     // event loop
     while (1)
     {
-        if (local_events & EV_DISPLAY)
+        if (local_events & 1)
         {
-            disp_process_events(EV_DISPLAY, local_display_events);
-        }
-        if (local_events & EV_BUTTON)
-        {
-            disp_process_events(EV_BUTTON, local_button_events);
         }
 
         while (1)
@@ -62,16 +54,6 @@ int main(void)
             cli();
             // check if there is a new event
             local_events = global_events;
-            if (local_events & EV_DISPLAY)
-            {
-                local_display_events = global_display_events;
-                global_display_events = 0;
-            }
-            if (local_events & EV_BUTTON)
-            {
-                local_button_events = global_button_events;
-                global_button_events = 0;
-            }
             global_events = 0;
             if (local_events)
             {
