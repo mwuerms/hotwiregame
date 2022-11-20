@@ -11,6 +11,7 @@
 
 // AUDIO, PORTB
 #define PIN_AUDIO_PWM (1) // D9, variable pwm signal, audio tones
+#define PIN_INT_LED (5) // D13, internal LED
 
 // ISP PORTB: 3, 4, 5
 

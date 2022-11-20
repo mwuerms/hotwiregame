@@ -1,2 +1,2 @@
 // this file was automatically created by the Makefile, do not edit
-#define GIT_VERSION "f5c834c-dirty"
+#define GIT_VERSION "299737f-dirty"

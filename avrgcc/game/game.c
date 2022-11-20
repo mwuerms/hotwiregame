@@ -11,11 +11,10 @@
 #include "disp.h"
 #include "gpio.h"
 #include "audio.h"
+#include "timer.h"
 
 // - defines -------------------------------------------------------------------
 // mockups
-#define timer_start(x)
-#define timer_stop()
 #define race_timer_start(x)
 
 // - private variables ---------------------------------------------------------
@@ -42,7 +41,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           game_state = st_ready;
           disp_game_state_ready();
           audio_on(1000, 500);
-          timer_start(1000);
+          timer_start(TIMER_NB_INTERVALS_1S, EV_TIMER_1);
         }
       }
       break;
@@ -60,7 +59,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           game_state = st_set;
           disp_game_state_set();
           audio_on(1000, 500);
-          timer_start(1000);
+          timer_start(TIMER_NB_INTERVALS_1S, EV_TIMER_1);
         }
       }
       break;

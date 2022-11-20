@@ -12,6 +12,7 @@
 
 // - private functions ---------------------------------------------------------
 static volatile uint8_t wdt_timeout, wdt_global_event_flag, wdt_detail_event_flag;
+
 /**
  * watchdog ISR
  */
@@ -19,12 +20,10 @@ ISR(WDT_vect) {
     if(wdt_timeout == 0) {   // so "wdtTimer_StartTimeout(1, ...)" does result in delay of 1 and not 2 wdt periodes
         wdtTimer_Stop();
         SEND_EVENT(wdt_global_event_flag);
-        /*
-        if(wdt_global_event_flag & EV_DISPLAY)
-            SEND_DISPLAY_EVENT(wdt_detail_event_flag);
-        if(wdt_global_event_flag & EV_BUTTON)
-            SEND_BUTTON_EVENT(wdt_detail_event_flag);
-        */
+        if(wdt_global_event_flag & EV_GPIO)
+            SEND_GPIO_EVENT(wdt_detail_event_flag);
+        else if(wdt_global_event_flag & EV_TIMER)
+            SEND_TIMER_EVENT(wdt_detail_event_flag);
     }
     else {
         wdt_timeout--;

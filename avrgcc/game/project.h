@@ -10,6 +10,7 @@
 
 /* - includes --------------------------------------------------------------- */
 #include <stdint.h>
+#include <avr/io.h>
 #include "macrolib.h"
 
 // - public definitions --------------------------------------------------------

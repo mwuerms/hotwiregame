@@ -65,6 +65,10 @@ void disp_game_state_go(void)
 
 void disp_game_state_race(void)
 {
+  lcd_charMode(DOUBLESIZE);
+  lcd_gotoxy(0, 2);
+  lcd_puts("   GO!");
+  lcd_display();
 }
 
 void disp_game_state_finish(void)
