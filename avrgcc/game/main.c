@@ -23,8 +23,8 @@
 
 /* - public variables ------------------------------------------------------- */
 volatile uint8_t global_events;
-volatile uint8_t global_display_events;
-volatile uint8_t global_button_events;
+volatile uint8_t global_gpio_events;
+volatile uint8_t global_timer_events;
 
 /**
  * main loop
@@ -32,6 +32,8 @@ volatile uint8_t global_button_events;
 int main(void)
 {
     uint8_t local_events = 0;
+    uint8_t local_gpio_events = 0;
+    uint8_t local_timer_events = 0;
     // init
     sleep_mode_init();
     use_sleep_mode(ACTIVE);
@@ -45,8 +47,13 @@ int main(void)
     // event loop
     while (1)
     {
-        if (local_events & 1)
+        if (local_events & EV_GPIO)
         {
+            game_process_events(EV_GPIO, local_gpio_events);
+        }
+        if (local_events & EV_TIMER)
+        {
+            game_process_events(EV_TIMER, local_timer_events);
         }
 
         while (1)
@@ -55,6 +62,11 @@ int main(void)
             // check if there is a new event
             local_events = global_events;
             global_events = 0;
+            local_gpio_events = global_gpio_events;
+            global_gpio_events = 0;
+            local_timer_events = global_timer_events;
+            global_timer_events = 0;
+
             if (local_events)
             {
                 sei();

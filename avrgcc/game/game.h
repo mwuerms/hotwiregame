@@ -16,7 +16,7 @@ typedef enum {
   st_set,
   st_go,
   st_race,
-  st_end,
+  st_finish,
 } game_states_t;
 
 // - public functions ----------------------------------------------------------
