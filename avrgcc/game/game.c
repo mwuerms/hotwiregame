@@ -110,6 +110,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
         if(detail_events & EV_GPIO_FINISH_POINT_TOUCH) {
           // stop game here
           game_state = st_finish;
+          disp_game_state_finish();
         }
         else if(detail_events & EV_GPIO_HOT_WIRE_TOUCH) {
           // touched wire -> penalty
@@ -118,7 +119,8 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           }
           else {
             // max. reached, stop game 
-            game_state = st_finish; 
+            game_state = st_finish;
+            disp_game_state_finish();
           }
         }
       }
@@ -126,7 +128,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
         if(detail_events & EV_TIMER_GAME_UPDATE_DISP) {
           PORTB |=  _BV(PIN_DBG1);
           game_state = st_race;
-          if(game_race.time_100ms < 10) {
+          if(game_race.time_100ms < 9) {
             game_race.time_100ms++;
           }
           else {
@@ -137,6 +139,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
             else {
               // max. reached, stop game 
               game_state = st_finish;
+              disp_game_state_finish();
             }
           }
           disp_game_state_race_update(game_race.time_s, game_race.time_100ms, game_race.penalty);
@@ -145,6 +148,12 @@ void game_process_events(uint8_t events, uint8_t detail_events)
       }
       break;
     case st_finish:
+      if(events & EV_GPIO) {
+        if(detail_events & EV_GPIO_START_POINT_TOUCH) {
+          game_state = st_wait_start;
+          disp_game_state_wait_start();
+        }
+      }
       break;
     default: ;
   }

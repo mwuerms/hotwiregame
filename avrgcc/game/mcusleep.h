@@ -13,8 +13,7 @@ void enter_sleep_mode(void);
 
 // use -fshort-enums for enums
 enum sleep_modes{
-    ACTIVE = 0,
-    IDLE,
+    IDLE = 0,
     POWER_DOWN,
     POWER_SAVE,
     STANDBY,

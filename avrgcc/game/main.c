@@ -39,10 +39,12 @@ int main(void)
 
     // init
     wdt_off();
-    PRR = 0x00; // no power reduction
-
+    // 0: module enabled, 1: module in power reduction
+    // use TWI, Timer0
+    PRR = ((0 << PRTWI)|(1 << PRTIM2)|(0 << PRTIM0)|(1 << PRTIM1)|(1 << PRSPI)|(1 << PRUSART0)|(1 << PRADC));
+    
     sleep_mode_init();
-    use_sleep_mode(ACTIVE);
+    use_sleep_mode(IDLE); // use Timer0
 
     DDRB |=   ((1 << PIN_DBG1)|(1 << PIN_INT_LED));
     PORTB &= ~((1 << PIN_DBG1)|(1 << PIN_INT_LED));
