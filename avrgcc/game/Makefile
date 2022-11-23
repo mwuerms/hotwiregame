@@ -85,7 +85,7 @@ FORMAT = ihex
 OBJDIR = obj
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = main.c mcusleep.c wdt.c audio.c gpio.c timer.c game.c disp.c i2c.c lcd.c font.c
+SRC = main.c mcusleep.c wdt.c audio.c gpio.c timer.c game.c disp.c strlib.c i2c.c lcd.c font.c
 
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC =

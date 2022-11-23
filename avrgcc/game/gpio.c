@@ -68,21 +68,22 @@ ISR(PCINT2_vect)
   if(start_in) {
     SEND_EVENT(EV_GPIO);
     SEND_GPIO_EVENT(EV_GPIO_START_POINT_RELEASE);
-    PORTB &= ~_BV(PIN_INT_LED);
   }
   else {
     SEND_EVENT(EV_GPIO);
     SEND_GPIO_EVENT(EV_GPIO_START_POINT_TOUCH);
-    PORTB |=  _BV(PIN_INT_LED);
   }
   // tested: OK PINB |= (1 << PIN_DBG1); // toggle
 }
 
+static volatile uint8_t gpio_pind, gpio_pind_old;
 void gpio_init(void)
 {
   // vars
   gpio_ctrl.monitor = 0;
   gpio_ctrl.hot_wire_touch_cnt = 0;
+  gpio_pind = PIND;
+  gpio_pind_old = gpio_pind;
 
   // gpios
   DDRD &= ~(_BV(PIN_HOT_WIRE) | _BV(PIN_FINISH_POINT) | _BV(PIN_START_POINT));
@@ -93,7 +94,7 @@ void gpio_init(void)
   // PIN_START_POINT
   //PCIFR |= _BV(PCIF2); // clear
   //PCICR |= _BV(PCIE2);
-  PCMSK2 |= (_BV(PCINT20));
+  //PCMSK2 |= (_BV(PCINT20));
 }
 
 void gpio_start_monitor_single(uint8_t gpio_mask) {
@@ -111,6 +112,7 @@ void gpio_start_monitor_single(uint8_t gpio_mask) {
     gpio_ctrl.monitor &= ~_BV(PIN_FINISH_POINT); // single
     PCIFR |= _BV(PCIF2); // clear
     PCICR |= _BV(PCIE2);
+    PCMSK2 |= (_BV(PCINT20));
   }
 }
 
@@ -124,7 +126,65 @@ void gpio_stop_monitor(uint8_t gpio_mask) {
     EIMSK &= ~_BV(INT1);
   }
   if(gpio_mask & _BV(PIN_START_POINT)) {
-    PCIFR |=  _BV(PCIF2); // clear
-    PCICR &= ~_BV(PCIE2);
+    PCIFR  |=  _BV(PCIF2); // clear
+    PCICR  &= ~_BV(PCIE2);
+    PCMSK2 &= ~_BV(PCINT20);
   }
+}
+
+#define GPIO_PIN_LOW (0)
+#define GPIO_PIN_HIGH  (1)
+#define GPIO_PIN_FALLING_EDGE (2)
+#define GPIO_PIN_RISING_EDGE (3)
+static uint8_t gpio_eval(uint8_t pin, uint8_t pin_old) {
+  if(pin_old == 0) {
+    // _old low
+    if(pin == 0) {
+      // low: low signal
+      return GPIO_PIN_LOW;
+    }
+    else {
+      // high: rising edge
+      return GPIO_PIN_RISING_EDGE;
+    }
+  }
+  else {
+    // _old high
+    if(pin == 0) {
+      // low: falling edge
+      return GPIO_PIN_FALLING_EDGE;
+    }
+    else {
+      // high: high signal
+      return GPIO_PIN_HIGH;
+    }
+  }
+}
+
+void gpio_poll_generate_events(void) {
+  uint8_t pin_state;
+  gpio_pind = PIND;
+  // PIN_HOT_WIRE
+  pin_state = gpio_eval((gpio_pind & _BV(PIN_HOT_WIRE)), (gpio_pind_old & _BV(PIN_HOT_WIRE)));
+  if(pin_state == GPIO_PIN_FALLING_EDGE) {
+    SEND_EVENT(EV_GPIO);
+    SEND_GPIO_EVENT(EV_GPIO_HOT_WIRE_TOUCH);
+  }
+  // PIN_FINISH_POINT
+  pin_state = gpio_eval((gpio_pind & _BV(PIN_FINISH_POINT)), (gpio_pind_old & _BV(PIN_FINISH_POINT)));
+  if(pin_state == GPIO_PIN_FALLING_EDGE) {
+    SEND_EVENT(EV_GPIO);
+    SEND_GPIO_EVENT(EV_GPIO_FINISH_POINT_TOUCH);
+  }
+  // PIN_START_POINT
+  pin_state = gpio_eval((gpio_pind & _BV(PIN_START_POINT)), (gpio_pind_old & _BV(PIN_START_POINT)));
+  if(pin_state == GPIO_PIN_FALLING_EDGE) {
+    SEND_EVENT(EV_GPIO);
+    SEND_GPIO_EVENT(EV_GPIO_START_POINT_TOUCH);
+  }
+  else if(pin_state == GPIO_PIN_RISING_EDGE) {
+    SEND_EVENT(EV_GPIO);
+    SEND_GPIO_EVENT(EV_GPIO_START_POINT_RELEASE);
+  }
+  gpio_pind_old = gpio_pind;
 }

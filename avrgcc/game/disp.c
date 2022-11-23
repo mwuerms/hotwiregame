@@ -13,7 +13,15 @@
 #include <stdint.h>
 #include "gpio.h"
 #include "game.h"
+#include "strlib.h"
 
+// - private variables ---------------------------------------------------------
+#define LINE_SIZE (23)
+static char line[LINE_SIZE + 1]; // +1: '\0' at the end
+static char num_str[12];
+static uint8_t num_len;
+
+// - public functions ----------------------------------------------------------
 void disp_init(void)
 {
   // gpios
@@ -47,12 +55,12 @@ void disp_game_state_wait_3(void)
   lcd_gotoxy(0, 0);
   //       "3 2 1 GO! "
   lcd_puts("3         ");
-  lcd_gotoxy(0, 2);
-  lcd_puts("0123456789");
+  //lcd_gotoxy(0, 2);
+  //lcd_puts("0123456789");
   lcd_gotoxy(0, 4);
-  lcd_puts("Penalty: X");
+  lcd_puts("Touch     ");
   lcd_gotoxy(0, 6);
-  lcd_puts("Time: 0.0s");
+  lcd_puts("Time  0.0s");
   lcd_display();
 }
 
@@ -81,17 +89,33 @@ void disp_game_state_race(void) {
   //       "3 2 1 GO! "
   lcd_puts("      GO! ");
   lcd_gotoxy(0, 4);
-  lcd_puts("Penalty: X");
+  lcd_puts("Touch     ");
   lcd_gotoxy(0, 6);
-  lcd_puts("Time: 0.0s");
+  lcd_puts("Time  0.0s");
   lcd_display();
 }
 void disp_game_state_race_update(uint8_t time_s, uint8_t time_100ms, uint8_t penalty)
 {
-  //lcd_clrscr();
   lcd_charMode(DOUBLESIZE);
-  lcd_gotoxy(0, 0);
-  //lcd_puts("   GO!");
+  lcd_gotoxy(0, 4);
+  stringncopy(&line[0], "Touch    0", LINE_SIZE);
+  int8_t_to_str(num_str, penalty, 2);
+  stringncopy(&line[7], num_str, LINE_SIZE);
+  lcd_puts(line);
+
+  lcd_gotoxy(0, 6);
+  //stringncopy(&line[0], "Time  0.0s", LINE_SIZE);
+  stringncopy(&line[0], "abcdefghij", LINE_SIZE);
+  uint8_t_to_str(num_str, time_s, 3);
+  //stringncopy(&line[4], num_str, LINE_SIZE);
+  line[4] = num_str[0];
+  line[5] = num_str[1];
+  line[6] = num_str[2];
+  line[7] = '.';
+  line[8] = (time_100ms&0x0F) + '0';
+  line[9] = 's';
+  line[10] = '\0';
+  lcd_puts(line);
   lcd_display();
 }
 
