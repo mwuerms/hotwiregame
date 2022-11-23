@@ -69,9 +69,7 @@ int main(void)
             if(local_timer_events & EV_TIMER_POLL_GPIO) {
                 gpio_poll_generate_events();
             }
-            else {
-                game_process_events(EV_TIMER, local_timer_events);
-            }
+            game_process_events(EV_TIMER, local_timer_events);
         }
 
         while (1)
