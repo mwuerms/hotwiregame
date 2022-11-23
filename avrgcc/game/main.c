@@ -48,6 +48,7 @@ int main(void)
     PORTB &= ~((1 << PIN_DBG1)|(1 << PIN_INT_LED));
 
     gpio_init();
+    gpio_start_monitor_single(_BV(PIN_HOT_WIRE)|_BV(PIN_FINISH_POINT)|_BV(PIN_START_POINT));
     game_init();
     audio_init();
 
@@ -60,6 +61,7 @@ int main(void)
         if (local_events & EV_GPIO)
         {
             game_process_events(EV_GPIO, local_gpio_events);
+            gpio_start_monitor_single(_BV(PIN_HOT_WIRE)|_BV(PIN_FINISH_POINT)|_BV(PIN_START_POINT));
         }
         if (local_events & EV_TIMER)
         {

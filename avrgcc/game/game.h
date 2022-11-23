@@ -12,9 +12,9 @@
 typedef enum {
   st_init = 0,
   st_wait_start,
-  st_ready,
-  st_set,
-  st_go,
+  st_wait_3,
+  st_wait_2,
+  st_wait_1,
   st_race,
   st_finish,
 } game_states_t;

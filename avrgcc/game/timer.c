@@ -53,6 +53,7 @@ ISR(TIMER0_OVF_vect)
             timer_ms_tick.repeated_event.cnt_down_ms = timer_ms_tick.repeated_event.cnt_down_ms_reload;
             SEND_EVENT(EV_TIMER);
             SEND_TIMER_EVENT(timer_ms_tick.repeated_event.event);
+            PINB |= (1 << PIN_INT_LED); // toggle
         }
         else {
             timer_ms_tick.repeated_event.cnt_down_ms--;
