@@ -31,6 +31,18 @@ ISR(WDT_vect) {
 }
 
 // - public functions ----------------------------------------------------------
+
+void wdt_off(void) {
+    // copy from datasheet atmega328p
+    /* Clear WDRF in MCUSR */
+    MCUSR &= ~(1<<WDRF);
+    /* Write logical one to WDCE and WDE */
+    /* Keep old prescaler setting to prevent unintentional time-out */
+    WDTCSR |= (1<<WDCE) | (1<<WDE);
+    /* Turn off WDT */
+    WDTCSR = 0x00;
+}
+
 /**
  * start the wdtTimer
  * @param   timeout     overall timeout = interval * timeout

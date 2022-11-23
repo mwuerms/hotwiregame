@@ -37,35 +37,35 @@ int main(void)
     uint8_t local_gpio_events = 0;
     uint8_t local_timer_events = 0;
 
-    DDRB |= (1 << PIN_INT_LED);
-    PORTB &= ~(1 << PIN_INT_LED);
-    PINB |= (1 << 5);
-
     // init
+    wdt_off();
+    PRR = 0x00; // no power reduction
+
     sleep_mode_init();
     use_sleep_mode(ACTIVE);
+
+    DDRB |=   ((1 << PIN_DBG1)|(1 << PIN_INT_LED));
+    PORTB &= ~((1 << PIN_DBG1)|(1 << PIN_INT_LED));
 
     gpio_init();
     game_init();
     audio_init();
 
-    timer_start(TIMER_NB_INTERVALS_1S, 0x80);
+    timer_start_ms_tick();
+    timer_start_ms_single_event(1000, 0x80);
     sei();
-    
-    while (1);
+
     // event loop
     while (1)
     {
+        if(local_timer_events & 0x80) {
+            PORTB |=  (1 << PIN_INT_LED);
+            SEND_EVENT(EV_GPIO);
+            SEND_GPIO_EVENT(EV_GPIO_START_POINT_TOUCH);
+        }
         if (local_events & EV_GPIO)
         {
             game_process_events(EV_GPIO, local_gpio_events);
-        }
-        if(local_timer_events & 0x80) {
-            PORTB |=  (1 << PIN_INT_LED);
-
-            local_timer_events & ~0x80;
-            SEND_EVENT(EV_GPIO);
-            SEND_GPIO_EVENT(EV_GPIO_START_POINT_RELEASE);
         }
         if (local_events & EV_TIMER)
         {

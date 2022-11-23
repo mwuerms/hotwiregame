@@ -28,6 +28,7 @@ void disp_clear(void)
 }
 
 void disp_game_state_wait_start(void) {
+  lcd_clrscr();
   lcd_charMode(DOUBLESIZE);
   lcd_gotoxy(0, 0);
   lcd_puts("  Heisser");
@@ -41,6 +42,7 @@ void disp_game_state_wait_start(void) {
 
 void disp_game_state_ready(void)
 {
+  lcd_clrscr();
   lcd_charMode(DOUBLESIZE);
   lcd_gotoxy(0, 2);
   lcd_puts("  Ready");
@@ -49,6 +51,7 @@ void disp_game_state_ready(void)
 
 void disp_game_state_set(void)
 {
+  lcd_clrscr();
   lcd_charMode(DOUBLESIZE);
   lcd_gotoxy(0, 2);
   lcd_puts("  Set");
@@ -57,6 +60,7 @@ void disp_game_state_set(void)
 
 void disp_game_state_go(void)
 {
+  lcd_clrscr();
   lcd_charMode(DOUBLESIZE);
   lcd_gotoxy(0, 2);
   lcd_puts("   GO!");
@@ -65,6 +69,7 @@ void disp_game_state_go(void)
 
 void disp_game_state_race(void)
 {
+  lcd_clrscr();
   lcd_charMode(DOUBLESIZE);
   lcd_gotoxy(0, 2);
   lcd_puts("   GO!");

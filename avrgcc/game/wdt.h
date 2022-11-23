@@ -11,6 +11,8 @@
 #include <stdint.h>
 
 // - public functions ----------------------------------------------------------
+void wdt_off(void);
+
 #define cEV_TIMER_INTERVAL_16MS     (0)
 #define cEV_TIMER_INTERVAL_32MS     (1)
 #define cEV_TIMER_INTERVAL_64MS     (2)

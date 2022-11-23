@@ -14,8 +14,7 @@
 #include "timer.h"
 
 // - defines -------------------------------------------------------------------
-// mockups
-#define race_timer_start(x)
+#define race_timer_start()  //timer_reset_ms_tick()
 
 // - private variables ---------------------------------------------------------
 static game_states_t game_state;
@@ -41,7 +40,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           game_state = st_ready;
           disp_game_state_ready();
           audio_on(1000, 500);
-          timer_start(TIMER_NB_INTERVALS_1S, EV_TIMER_1);
+          timer_start_ms_single_event(1000, EV_TIMER_1);
         }
       }
       break;
@@ -59,7 +58,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           game_state = st_set;
           disp_game_state_set();
           audio_on(1000, 500);
-          timer_start(TIMER_NB_INTERVALS_1S, EV_TIMER_1);
+          timer_start_ms_single_event(1000, EV_TIMER_1);
         }
       }
       break;
@@ -77,7 +76,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           game_state = st_go;
           disp_game_state_go();
           audio_on(2000, 500);
-          race_timer_start(0);
+          race_timer_start();
         }
       }
       break;

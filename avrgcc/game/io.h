@@ -10,6 +10,7 @@
 /* - includes --------------------------------------------------------------- */
 
 // AUDIO, PORTB
+#define PIN_DBG1 (0) // D8, debug output
 #define PIN_AUDIO_PWM (1) // D9, variable pwm signal, audio tones
 #define PIN_INT_LED (5) // D13, internal LED
 
