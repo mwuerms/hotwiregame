@@ -38,7 +38,7 @@ extern volatile uint8_t global_gpio_events;
 #define EV_GPIO_START_POINT_RELEASE _BV(3)
 
 extern volatile uint8_t global_timer_events;
-#define EV_TIMER_1 _BV(0)
+#define EV_TIMER_GAME_NEXT_STEP _BV(0)
 
 #define SEND_EVENT(ev) global_events |= ev
 #define SEND_GPIO_EVENT(ev) global_gpio_events |= ev

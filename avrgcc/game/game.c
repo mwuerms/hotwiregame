@@ -40,7 +40,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           game_state = st_ready;
           disp_game_state_ready();
           audio_on(1000, 500);
-          timer_start_ms_single_event(1000, EV_TIMER_1);
+          timer_start_ms_single_event(1000, EV_TIMER_GAME_NEXT_STEP);
         }
       }
       break;
@@ -54,11 +54,11 @@ void game_process_events(uint8_t events, uint8_t detail_events)
         }
       }
       else if(events & EV_TIMER) {
-        if(detail_events & EV_TIMER_1) {
+        if(detail_events & EV_TIMER_GAME_NEXT_STEP) {
           game_state = st_set;
           disp_game_state_set();
           audio_on(1000, 500);
-          timer_start_ms_single_event(1000, EV_TIMER_1);
+          timer_start_ms_single_event(1000, EV_TIMER_GAME_NEXT_STEP);
         }
       }
       break;
@@ -72,7 +72,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
         }
       }
       else if(events & EV_TIMER) {
-        if(detail_events & EV_TIMER_1) {
+        if(detail_events & EV_TIMER_GAME_NEXT_STEP) {
           game_state = st_go;
           disp_game_state_go();
           audio_on(2000, 500);

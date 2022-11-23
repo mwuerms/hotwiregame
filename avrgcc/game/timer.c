@@ -36,7 +36,7 @@ static volatile struct {
 ISR(TIMER0_OVF_vect)
 {
     TCNT0 = TIMER_RELOAD_CNT_1MS_PRESC_64;
-    PINB |= (1 << PIN_DBG1); // toggle
+    //unused, timing OK, PINB |= (1 << PIN_DBG1); // toggle
 
     // count ms, s
     if(timer_ms_tick.time.ms < 1000) {
@@ -90,14 +90,6 @@ void timer_start_ms_tick(void) {
     TCCR0B = ((0<<CS02)|(1<<CS01)|(1<<CS00)); // run using precsaler 64, 8MHz / 64 / 125 = 1 ms
 
     PORTB &= ~(1 << 5);
-
-    PINB |= (1 << PIN_DBG1); // toggle
-    PINB |= (1 << PIN_DBG1); // toggle
-    PINB |= (1 << PIN_DBG1); // toggle
-    PINB |= (1 << PIN_DBG1); // toggle
-    PINB |= (1 << PIN_DBG1); // toggle
-    PINB |= (1 << PIN_DBG1); // toggle
-    PINB |= (1 << PIN_DBG1); // toggle
 }
 
 void timer_reset_ms_tick(void) {

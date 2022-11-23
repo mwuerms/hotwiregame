@@ -25,6 +25,8 @@ ISR(INT0_vect)
   hot_wire_touch_cnt++;
   SEND_EVENT(EV_GPIO);
   SEND_GPIO_EVENT(EV_GPIO_HOT_WIRE_TOUCH);
+
+  // tested: OK PINB |= (1 << PIN_DBG1); // toggle
 }
 
 // PIN_FINISH_POINT, INT1
@@ -32,13 +34,14 @@ ISR(INT1_vect)
 {
   SEND_EVENT(EV_GPIO);
   SEND_GPIO_EVENT(EV_GPIO_FINISH_POINT_TOUCH);
+
+  // tested: OK PINB |= (1 << PIN_DBG1); // toggle
 }
 
 // PIN_START_POINT, PD4, PCINT20
-ISR(PCINT1_vect)
+ISR(PCINT2_vect)
 {
   uint8_t start_in = PIND & _BV(PIN_START_POINT);
-  cli();
 
   if(start_in) {
     SEND_EVENT(EV_GPIO);
@@ -48,8 +51,7 @@ ISR(PCINT1_vect)
     SEND_EVENT(EV_GPIO);
     SEND_GPIO_EVENT(EV_GPIO_START_POINT_TOUCH);
   }
-
-  sei();
+  // tested: OK PINB |= (1 << PIN_DBG1); // toggle
 }
 
 void gpio_init(void)
@@ -59,7 +61,7 @@ void gpio_init(void)
 
   // gpios
   DDRD &= ~(_BV(PIN_HOT_WIRE) | _BV(PIN_FINISH_POINT) | _BV(PIN_START_POINT));
-  EICRA = (_BV(ISC11) | _BV(ISC01)); // INT0, INT1 on falling edge = button pressed
+  EICRA = (_BV(ISC11) | _BV(ISC01)); // INT0, INT1 on falling edge: touch
   EIFR = (_BV(INTF0) | _BV(INTF1));
   EIMSK = (_BV(INT0) | _BV(INT1));
 

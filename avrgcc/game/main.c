@@ -52,17 +52,11 @@ int main(void)
     audio_init();
 
     timer_start_ms_tick();
-    timer_start_ms_single_event(1000, 0x80);
     sei();
 
     // event loop
     while (1)
     {
-        if(local_timer_events & 0x80) {
-            PORTB |=  (1 << PIN_INT_LED);
-            SEND_EVENT(EV_GPIO);
-            SEND_GPIO_EVENT(EV_GPIO_START_POINT_TOUCH);
-        }
         if (local_events & EV_GPIO)
         {
             game_process_events(EV_GPIO, local_gpio_events);
