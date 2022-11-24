@@ -22,7 +22,7 @@ static struct {
 
 // - defines -------------------------------------------------------------------
 #define race_timer_start(periode, ev)  timer_start_ms_repeated_event(TIMER_EV_NR_GAME, periode, ev)
-static uint8_t a, b;
+
 // - private functions ---------------------------------------------------------
 
 // - public functions ----------------------------------------------------------
@@ -43,7 +43,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
         if(detail_events & EV_GPIO_START_POINT_TOUCH) {
           game_state = st_wait_3;
           disp_game_state_wait_3();
-          audio_on(1000, 500);
+          audio_on_duration_ms(AUDIO_FREQ_BEEP1_880Hz, 500);
           timer_start_ms_single_event(1000, EV_TIMER_GAME_NEXT_STEP);
         }
       }
@@ -61,7 +61,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
         if(detail_events & EV_TIMER_GAME_NEXT_STEP) {
           game_state = st_wait_2;
           disp_game_state_wait_2();
-          audio_on(1000, 500);
+          audio_on_duration_ms(AUDIO_FREQ_BEEP1_880Hz, 500);
           timer_start_ms_single_event(1000, EV_TIMER_GAME_NEXT_STEP);
         }
       }
@@ -79,7 +79,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
         if(detail_events & EV_TIMER_GAME_NEXT_STEP) {
           game_state = st_wait_1;
           disp_game_state_wait_1();
-          audio_on(1000, 500);
+          audio_on_duration_ms(AUDIO_FREQ_BEEP1_880Hz, 500);
           timer_start_ms_single_event(1000, EV_TIMER_GAME_NEXT_STEP);
         }
       }
@@ -100,7 +100,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           game_race.time_100ms = 0;
           game_race.penalty = 0;
           disp_game_state_race();
-          audio_on(2000, 500);
+          audio_on_duration_ms(AUDIO_FREQ_BEEP2_932Hz, 1000);
           race_timer_start(100, EV_TIMER_GAME_UPDATE_DISP);
         }
       }
@@ -116,6 +116,7 @@ void game_process_events(uint8_t events, uint8_t detail_events)
           // touched wire -> penalty
           if(game_race.penalty < 99) {
             game_race.penalty++;
+            audio_on_duration_ms(AUDIO_FREQ_BEEP_TOUCH_715Hz, 500);
           }
           else {
             // max. reached, stop game 

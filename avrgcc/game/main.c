@@ -41,7 +41,7 @@ int main(void)
     wdt_off();
     // 0: module enabled, 1: module in power reduction
     // use TWI, Timer0
-    PRR = ((0 << PRTWI)|(1 << PRTIM2)|(0 << PRTIM0)|(1 << PRTIM1)|(1 << PRSPI)|(1 << PRUSART0)|(1 << PRADC));
+    PRR = ((0 << PRTWI)|(1 << PRTIM2)|(0 << PRTIM0)|(0 << PRTIM1)|(1 << PRSPI)|(1 << PRUSART0)|(1 << PRADC));
     
     sleep_mode_init();
     use_sleep_mode(IDLE); // use Timer0
@@ -53,6 +53,7 @@ int main(void)
     //gpio_start_monitor_single(_BV(PIN_HOT_WIRE)|_BV(PIN_FINISH_POINT)|_BV(PIN_START_POINT));
     game_init();
     audio_init();
+    audio_on_duration_ms(715, 500);
 
     timer_start_ms_tick();
     timer_start_ms_repeated_event(TIMER_EV_NR_GPIO, 10, EV_TIMER_POLL_GPIO);

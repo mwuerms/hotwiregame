@@ -11,7 +11,7 @@
 #include "io.h"
 
 // - defines -------------------------------------------------------------------
-#define TIMER_RELOAD_CNT_1MS_PRESC_64 (255-(125*2))
+#define TIMER_RELOAD_CNT_1MS_PRESC_64 (255-(125))
 // - private variables ---------------------------------------------------------
 static volatile uint16_t timer_delay_ms;
 static volatile uint8_t  timer_send_event;
