@@ -49,11 +49,44 @@ module displayPCB() {
     cube([27, 19, 1.5]);
 }
 
+module displayPCB2_25x27(loc_res = 32) {
+    difference() {
+        union() {
+            color("Gray") // Black
+            translate([0, 0, 0])
+            cube([25, 27, 1]);
+            color("White")
+            translate([0, 5, 0])
+            cube([25, 17, 1.5]);
+            
+            color("Silver") {
+                translate([8.5, 27-1.7, -0.1])
+                cylinder(d = 2, h = 1.2, $fn = loc_res);
+                translate([8.5+1*2.54, 27-1.7, -0.1])
+                cylinder(d = 2, h = 1.2, $fn = loc_res);
+                translate([8.5+2*2.54, 27-1.7, -0.1])
+                cylinder(d = 2, h = 1.2, $fn = loc_res);
+                translate([8.5+3*2.54, 27-1.7, -0.1])
+                cylinder(d = 2, h = 1.2, $fn = loc_res);
+            }
+        }
+        // m3 holes
+        translate([2, 2, -1])
+        cylinder(d = 3, h = 4, $fn = loc_res);
+        translate([25-2, 2, -1])
+        cylinder(d = 3, h = 4, $fn = loc_res);
+        translate([2, 27-2, -1])
+        cylinder(d = 3, h = 4, $fn = loc_res);
+        translate([25-2, 27-2, -1])
+        cylinder(d = 3, h = 4, $fn = loc_res);
+    }
+}
+
 module switch() {
-    color("Black")
+    color("Gray")
     translate([0, 0, 0])
     cube([17, 13, 12]);
-    color("Black")
+    color("Gray")
     translate([-2, -2, 12])
     cube([17+4, 13+4, 2]);
     color("Red")
@@ -73,4 +106,4 @@ module vibraMotor() {
     cylinder(d = 10, h = 3, $fn = 32);
 }
 
-vibraMotor();
+displayPCB2_25x27();
