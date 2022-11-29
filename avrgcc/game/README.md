@@ -1,2 +1,3 @@
-# pwmgen
-pwm generator using avr and oled
+# hot wire game
+
+a hot wire game using avr, oled and speaker
