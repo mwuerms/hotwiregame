@@ -106,4 +106,58 @@ module vibraMotor() {
     cylinder(d = 10, h = 3, $fn = 32);
 }
 
-displayPCB2_25x27();
+module speaker2W_M2_Holes(hi = 5, loc_res = 32) {
+    translate([+(28/2-3), -(28/2-3), -1])
+    cylinder(d = 2, h = hi, $fn = loc_res);
+    translate([-(28/2-3), +(28/2-3), -1])
+    cylinder(d = 2, h = hi, $fn = loc_res);
+}
+
+module speaker2W_Cover_Holes(hi = 5, loc_res = 32) {
+    dia = 4;
+    translate([0, 0, -1]) {
+        translate([0, 0, 0])
+        cylinder(d = dia, h = hi, $fn = loc_res);
+        for(n = [0:1:5])
+        translate([5*cos(n*60), 5*sin(n*60), 0])
+        cylinder(d = dia, h = hi, $fn = loc_res);
+        for(n = [0:1:5])
+        translate([2*5*cos(n*60), 2*5*sin(n*60), 0])
+        cylinder(d = dia, h = hi, $fn = loc_res);
+        for(n = [0:1:5])
+        translate([1.8*5*cos(n*60+30), 1.8*5*sin(n*60+30), 0])
+        cylinder(d = dia, h = hi, $fn = loc_res);
+    }
+}
+
+module speaker2W(loc_res = 32) {
+    color("DarkGray")
+    difference() {
+        hull() {
+            translate([+(28/2-1), +(28/2-1), -3])
+            cylinder(r = 1, h = 3, $fn = loc_res);
+            translate([+(28/2-1), -(28/2-1), -3])
+            cylinder(r = 1, h = 3, $fn = loc_res);
+            translate([-(28/2-1), +(28/2-1), -3])
+            cylinder(r = 1, h = 3, $fn = loc_res);
+            translate([-(28/2-1), -(28/2-1), -3])
+            cylinder(r = 1, h = 3, $fn = loc_res);
+        }
+        translate([-(28/2), -(28/2), -4])
+        cylinder(r = 3, h = 5, $fn = 4);
+        translate([+(28/2), +(28/2), -4])
+        cylinder(r = 3, h = 5, $fn = 4);
+        translate([0, 0, -4])
+        cylinder(d = 25, h = 5, $fn = loc_res);
+        // M2 holes
+        translate([0, 0, -3])
+        speaker2W_M2_Holes(5, loc_res);
+        
+    }
+    color("Silver")
+    translate([0, 0, -11])
+    cylinder(d = 23, h = 8, $fn = loc_res);
+}
+
+speaker2W();
+speaker2W_Cover_Holes();
