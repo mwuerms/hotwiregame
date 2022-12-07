@@ -39,9 +39,9 @@ void disp_game_state_wait_start(void) {
   lcd_clrscr();
   lcd_charMode(DOUBLESIZE);
   lcd_gotoxy(0, 0);
-  lcd_puts("  Heisser");
+  lcd_puts("singender ");
   lcd_gotoxy(0, 2);
-  lcd_puts("   Draht");
+  lcd_puts("  Draht   ");
   lcd_gotoxy(0, 6);
   lcd_puts("goto start");
   lcd_display();
@@ -118,12 +118,12 @@ void disp_game_state_race_update(uint8_t secs, uint8_t millisecs, uint8_t penalt
   lcd_display();
 }
 
-void disp_game_state_finish(void)
+void disp_game_state_finish(char *str)
 {
   lcd_charMode(DOUBLESIZE);
   lcd_gotoxy(0, 0);
   //       "3 2 1 GO! "
-  lcd_puts("  FINISH  ");
+  lcd_puts(str);
   lcd_gotoxy(0, 2);
   lcd_puts("goto start");
   lcd_display();

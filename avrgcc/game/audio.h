@@ -14,9 +14,14 @@
 // - public MACROS -------------------------------------------------------------
 void audio_init(void);
 
-#define AUDIO_FREQ_BEEP_TOUCH_715Hz (715) // Hz 
-#define AUDIO_FREQ_BEEP1_880Hz (880) // Hz
-#define AUDIO_FREQ_BEEP2_932Hz (932) // Hz
+#define AUDIO_FREQ_BEEP_TOUCH (880) // Hz 
+#define AUDIO_FREQ_A4_440Hz  (440)
+#define AUDIO_FREQ_C5_523Hz  (523)
+#define AUDIO_FREQ_E5_659Hz  (659)
+#define AUDIO_FREQ_A5_880Hz (880)
+#define AUDIO_FREQ_C6_1046Hz (1046)
+#define AUDIO_FREQ_FAIL_A5Bb6_923Hz  (923)  // A5#/Bb6 
+
 void audio_on_duration_ms(uint16_t freq, uint16_t duration_ms);
 void audio_off(void);
 

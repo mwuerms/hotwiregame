@@ -25,7 +25,7 @@ void disp_game_state_wait_2(void);
 void disp_game_state_wait_1(void);
 void disp_game_state_race(void);
 void disp_game_state_race_update(uint8_t secs, uint8_t millisecs, uint8_t penalty);
-void disp_game_state_finish(void);
+void disp_game_state_finish(char *str);
 
 
 void disp_12(uint8_t ee, uint8_t pp, uint8_t acfe);

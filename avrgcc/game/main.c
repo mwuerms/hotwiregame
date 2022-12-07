@@ -50,13 +50,12 @@ int main(void)
     PORTB &= ~((1 << PIN_DBG1)|(1 << PIN_INT_LED));
 
     gpio_init();
-    //gpio_start_monitor_single(_BV(PIN_HOT_WIRE)|_BV(PIN_FINISH_POINT)|_BV(PIN_START_POINT));
     game_init();
     audio_init();
-    audio_on_duration_ms(715, 500);
 
     timer_start_ms_tick();
-    timer_start_ms_repeated_event(TIMER_EV_NR_GPIO, 10, EV_TIMER_POLL_GPIO);
+    gpio_start_monitor_single(_BV(PIN_HOT_WIRE)|_BV(PIN_FINISH_POINT)|_BV(PIN_START_POINT));
+
     sei();
 
     // event loop
@@ -64,13 +63,13 @@ int main(void)
     {
         if (local_events & EV_GPIO)
         {
-            PINB |= (1 << PIN_INT_LED);
             game_process_events(EV_GPIO, local_gpio_events);
+            timer_start_ms_single_event(TIMER_EV_NR_GPIO, 200, EV_TIMER_GPIO_START_MONITOR); // rearm monitor again in xy ms
         }
         if (local_events & EV_TIMER)
         {
-            if(local_timer_events & EV_TIMER_POLL_GPIO) {
-                gpio_poll_generate_events();
+            if(local_timer_events & EV_TIMER_GPIO_START_MONITOR) {
+                gpio_start_monitor_single(_BV(PIN_HOT_WIRE)|_BV(PIN_FINISH_POINT)|_BV(PIN_START_POINT));
             }
             game_process_events(EV_TIMER, local_timer_events);
         }

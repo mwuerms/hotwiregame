@@ -28,7 +28,7 @@ static volatile struct {
     struct {
         uint16_t cnt_down_ms;
         uint8_t  event;
-    } single_event;
+    } single_event[2];
 } timer_ms_tick;
 
 // - private functions ---------------------------------------------------------
@@ -44,6 +44,20 @@ static void timer_tick_process_repeated(uint8_t ev_nr) {
         }
         else {
             timer_ms_tick.repeated_event[ev_nr].cnt_down_ms--;
+        }
+    }
+    // else inactive
+}
+
+static void timer_tick_process_single(uint8_t ev_nr) {
+    if(timer_ms_tick.single_event[ev_nr].event) {
+        if(timer_ms_tick.single_event[ev_nr].cnt_down_ms == 0) {
+            SEND_EVENT(EV_TIMER);
+            SEND_TIMER_EVENT(timer_ms_tick.single_event[ev_nr].event);
+            timer_ms_tick.single_event[ev_nr].event = 0; // do only once
+        }
+        else {
+            timer_ms_tick.single_event[ev_nr].cnt_down_ms--;
         }
     }
     // else inactive
@@ -69,17 +83,8 @@ ISR(TIMER0_OVF_vect)
     timer_tick_process_repeated(1);
 
     // single event
-    if(timer_ms_tick.single_event.event) {
-        if(timer_ms_tick.single_event.cnt_down_ms == 0) {
-            SEND_EVENT(EV_TIMER);
-            SEND_TIMER_EVENT(timer_ms_tick.single_event.event);
-            timer_ms_tick.single_event.event = 0; // do only once
-        }
-        else {
-            timer_ms_tick.single_event.cnt_down_ms--;
-        }
-    }
-    // else inactive
+    timer_tick_process_single(0);
+    timer_tick_process_single(1);
 }
 
 // - public functions ----------------------------------------------------------
@@ -132,22 +137,22 @@ void timer_stop_ms_repeated_event(uint8_t ev_nr) {
     SREG = sr;
 }
 
-void timer_start_ms_single_event(uint16_t delay_ms, uint8_t event) {
+void timer_start_ms_single_event(uint8_t ev_nr, uint16_t delay_ms, uint8_t event) {
     uint8_t sr = SREG;
     cli();
 
-    timer_ms_tick.single_event.cnt_down_ms = delay_ms;
-    timer_ms_tick.single_event.event = event;
+    timer_ms_tick.single_event[ev_nr].cnt_down_ms = delay_ms;
+    timer_ms_tick.single_event[ev_nr].event = event;
 
     SREG = sr;
 }
 
-void timer_stop_ms_single_event(void) {
+void timer_stop_ms_single_event(uint8_t ev_nr) {
     uint8_t sr = SREG;
     cli();
 
-    timer_ms_tick.single_event.cnt_down_ms = 0;
-    timer_ms_tick.single_event.event = 0;
+    timer_ms_tick.single_event[ev_nr].cnt_down_ms = 0;
+    timer_ms_tick.single_event[ev_nr].event = 0;
 
     SREG = sr;
 }

@@ -32,14 +32,13 @@ volatile struct {
 // PIN_HOT_WIRE, INT0
 ISR(INT0_vect)
 {
-  if((gpio_ctrl.monitor & _BV(PIN_FINISH_POINT)) == 0) {
+  if((gpio_ctrl.monitor & _BV(PIN_HOT_WIRE)) == 0) {
     // do monitor single
     EIMSK &= ~_BV(INT0);
   }
   gpio_ctrl.hot_wire_touch_cnt++;
   SEND_EVENT(EV_GPIO);
   SEND_GPIO_EVENT(EV_GPIO_HOT_WIRE_TOUCH);
-
   // tested: OK PINB |= (1 << PIN_DBG1); // toggle
 }
 
@@ -52,7 +51,6 @@ ISR(INT1_vect)
   }
   SEND_EVENT(EV_GPIO);
   SEND_GPIO_EVENT(EV_GPIO_FINISH_POINT_TOUCH);
-
   // tested: OK PINB |= (1 << PIN_DBG1); // toggle
 }
 

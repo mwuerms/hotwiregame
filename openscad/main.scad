@@ -152,7 +152,136 @@ module partB(loc_res = 32) {
     cube([16, 6, 11]);
 }
 
+module partC(loc_res = 32) {
+    difference() {
+        union() {
+            hull() {
+                translate([-60,  3, 0])
+                cylinder(d = 2*3, h = 1, $fn = loc_res);
+                translate([+60,  3, 0])
+                cylinder(d = 2*3, h = 1, $fn = loc_res);
+                translate([-60,  80, 0])
+                cylinder(d = 2*3, h = 1, $fn = loc_res);
+                translate([+60,  80, 0])
+                cylinder(d = 2*3, h = 1, $fn = loc_res);
+            }
+            hull() {
+                translate([-20,  1, -2])
+                cylinder(d = 2, h = 3, $fn = loc_res);
+                translate([-20, 30, -2])
+                cylinder(d = 2, h = 3, $fn = loc_res);
+            }
+            hull() {
+                translate([+20,  1, -2])
+                cylinder(d = 2, h = 3, $fn = loc_res);
+                translate([+20, 30, -2])
+                cylinder(d = 2, h = 3, $fn = loc_res);
+            }
+            hull() {
+                translate([-20, 75, -2])
+                cylinder(d = 2, h = 3, $fn = loc_res);
+                translate([+20, 75, -2])
+                cylinder(d = 2, h = 3, $fn = loc_res);
+            }
+        }
+        // m3 holes for senkkopf holz schraube
+        translate([+(60-2), 5, -1.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+        translate([-(60-2), 5, -1.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+        translate([+(60-2), 80-2, -1.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+        translate([-(60-2), 80-2, -1.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+    }
+}
+
+module textSingenderDraht(loc_res = 32) {
+    difference() {
+        hull() {
+            translate([5+3, 5+3, 0])
+            cylinder(d = 16, h = 2, $fn = loc_res);
+            translate([121, 5+3, 0])
+            cylinder(d = 16, h = 2, $fn = loc_res);
+        }
+        translate([15, 4, -1])
+        //scale([1.25,1.5,1])
+        linear_extrude(4)
+        text("Singender Draht");
+        // m3 holes for senkkopf holz schraube
+        translate([5+3, 5+3, -0.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+        translate([121, 5+3, -0.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+    }
+    // g
+    translate([35, 6.5, 0])
+    cube([7, 2, 1]);
+    // e
+    translate([45.25, 6.5, 0])
+    cube([1.5, 7, 1]);
+    // d
+    translate([57, 6.5, 0])
+    cube([8, 2, 1]);
+    // e
+    translate([68, 6.5, 0])
+    cube([1.5, 7, 1]);
+    // D
+    translate([80.5, 7.5, 0])
+    cube([10, 2, 1]);
+    // a
+    translate([97.75, 2, 0])
+    cube([1.5, 7, 1]);
+}
+module textStart(loc_res = 32) {
+    difference() {
+        hull() {
+            translate([5+3, 5+3, 0])
+            cylinder(d = 16, h = 2, $fn = loc_res);
+            translate([51, 5+3, 0])
+            cylinder(d = 16, h = 2, $fn = loc_res);
+        }
+        translate([15, 3.5, -1])
+        linear_extrude(4)
+        text("Start");
+        // m3 holes for senkkopf holz schraube
+        translate([5+3, 5+3, -0.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+        translate([51, 5+3, -0.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+    }
+    // a
+    translate([31, 2, 0])
+    cube([1.5, 7, 1]);
+}
+module textZiel(loc_res = 32) {
+    difference() {
+        hull() {
+            translate([5+3, 5+3, 0])
+            cylinder(d = 16, h = 2, $fn = loc_res);
+            translate([44, 5+3, 0])
+            cylinder(d = 16, h = 2, $fn = loc_res);
+        }
+        translate([15, 3.5, -1])
+        linear_extrude(4)
+        text("Ziel");
+        // m3 holes for senkkopf holz schraube
+        translate([5+3, 5+3, -0.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+        translate([44, 5+3, -0.5])
+        cylinder(d2 = 6.5, d1 = 2.5, h = 3, $fn = loc_res);
+    }
+    // e
+    translate([29.25, 6.5, 0])
+    cube([1.5, 7, 1]);
+}
+
 //case1(0, 64);
 //partA(); // 2 x
 //translate([30, -16.5, -15]) 
-partB(); // 4 x
+//partB(); // 4 x
+//partC(); // 1 x
+
+//textSingenderDraht();
+//textStart();
+//textZiel();
